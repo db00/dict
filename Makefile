@@ -23,6 +23,13 @@ permission:= <uses-permission android:name="android.permission.WRITE_EXTERNAL_ST
 <uses-permission android:name="android.permission.INTERNET"\/> \
 <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="12" \/>
 
+
+SDL2_VERSION:=2.0.5
+TTF_VERSION:=2.0.14
+MIXER_VERSION:=2.0.1
+IMAGE_VERSION:=2.0.1
+DIR:=$(PWD)/dict
+
 #android create project -n $(app_name) -t 1 -p $(path) -k $(package) -a $(class)
 #android --clear-cache update project --name $(app_name) --path $(path) --target $(target)  --subprojects
 .PHONY : gen
@@ -42,3 +49,33 @@ gen:
 
 apk:
 	$(NDKBUILD) NDK_DEBUG=1 -C $(path) && ant debug -f $(path)/build.xml && adb install -r $(path)/bin/$(app_name)-debug.apk && adb shell am start -a android.intenon.MAIN -n $(package)/.$(class)
+
+
+
+new:
+ifneq (SDL2-$(SDL2_VERSION), $(wildcard SDL2-$(SDL2_VERSION)))
+	tar xvf SDL2-$(SDL2_VERSION).tar.gz
+endif
+ifneq (SDL2_image-$(IMAGE_VERSION), $(wildcard SDL2_image-$(IMAGE_VERSION)))
+	tar xvf SDL2_image-$(IMAGE_VERSION).tar.gz
+endif
+ifneq (SDL2_mixer-$(MIXER_VERSION), $(wildcard SDL2_mixer-$(MIXER_VERSION)))
+	tar xvf SDL2_mixer-$(MIXER_VERSION).tar.gz
+endif
+ifneq (SDL2_ttf-$(TTF_VERSION), $(wildcard SDL2_ttf-$(TTF_VERSION)))
+	tar xvf SDL2_ttf-$(TTF_VERSION).tar.gz
+endif
+ifeq (SDL2_VERSION,"2.0.8")
+	cp -r SDL2-$(SDL2_VERSION)/android-project/app $(DIR)
+else
+	cp -r SDL2-$(SDL2_VERSION)/android-project $(DIR)
+endif
+	rm $(DIR)/jni/SDL2 ; ln -s $(PWD)/SDL2-$(SDL2_VERSION) $(DIR)/jni/SDL2
+	rm $(DIR)/jni/SDL2_image ; ln -s $(PWD)/SDL2_image-$(IMAGE_VERSION) $(DIR)/jni/SDL2_image
+	rm $(DIR)/jni/SDL2_ttf ; ln -s $(PWD)/SDL2_ttf-$(TTF_VERSION) $(DIR)/jni/SDL2_ttf
+	rm $(DIR)/jni/SDL2_mixer ; ln -s $(PWD)/SDL2_mixer-$(MIXER_VERSION) $(DIR)/jni/SDL2_mixer
+	cp src/*.c $(DIR)/jni/src/	
+	cp src/*.h $(DIR)/jni/src/	
+	cp src/Makefile $(DIR)/jni/src/	
+	cp -r src/include/ $(DIR)/jni/src/include
+
