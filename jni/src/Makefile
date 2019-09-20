@@ -94,9 +94,9 @@ $(DEBUG_APK): $(KEY) *.c
 	$(NDK_HOME)/ndk-build NDK_DEBUG=1 -C $(PROJ_PATH) && ant debug -f $(PROJ_PATH)/build.xml
 
 debug:$(DEBUG_APK)
-#	curl -F Filedata=@$(DEBUG_APK) -F Filename=test.apk hw:8809/sdcard/sound/ -u test:test
+	curl -F Filedata=@$(DEBUG_APK) -F Filename=test.apk hw:8809/sdcard/sound/ -u test:test
+#	adb install -r $(DEBUG_APK) && adb shell am start -a android.intenon.MAIN -n $(PACKAGE)/.$(CLASS_NAME) && adb shell logcat SDL:V *:I
 #	adb shell pm uninstall $(PACKAGE)
-	adb install -r $(DEBUG_APK) && adb shell am start -a android.intenon.MAIN -n $(PACKAGE)/.$(CLASS_NAME) && adb shell logcat SDL:V *:I
 #	rm $(DEBUG_APK) &&\
 
 $(P12):
