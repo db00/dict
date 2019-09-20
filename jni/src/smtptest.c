@@ -1,6 +1,6 @@
 /**
  *
- gcc -D debug_email email.c base64.c ipstring.c && ./a.out
+ gcc -D debug_email email.c mystring.c array.c base64.c ipstring.c && ./a.out
  */
 #ifdef WIN32
 #include <windows.h>
@@ -18,6 +18,7 @@
 #include <unistd.h>
 #endif
 #include "ipstring.h"
+#include "mystring.h"
 #include "base64.h"
 
 // 打开TCP Socket连接
@@ -169,7 +170,7 @@ int main()
 		"To: \"dasiy\"<158386185@qq.com>\r\n"
 		"Subject: Hello\r\n\r\n"
 		"Hello World, Hello Email!";
-	sendemail("158386185","**********",email, body);
+	sendemail("158386185","biaoli512",email, body);
 	return 0;
 }
 #endif

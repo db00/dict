@@ -137,7 +137,7 @@ Sprite * Explain_show(Dict * dict,Word * word)
 
 		Sprite * enBtn;
 		int gap=2;
-		enBtn = makeTopBtn(explainContainer,"发音",gap,read_out);
+		//enBtn = makeTopBtn(explainContainer,"发音",gap,read_out);
 		//enBtn = makeTopBtn(explainContainer,"美音",gap,read_out);
 		enBtn = makeTopBtn(explainContainer,"搜图片",gap,read_out);
 		enBtn = makeTopBtn(explainContainer,"复制单词",gap,read_out);

@@ -2,9 +2,11 @@
  *
  gcc -g -Wall -I"../SDL2/include/" files.c myregex.c mystring.c array.c -lm  -D debug_files  && ./a.out
  gcc files.c  -D debug_files && a
+
+ ndk_home=~/android-ndk-r10 ; GCC=$ndk_home/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86/bin/arm-linux-androideabi-gcc ; sysroot=$ndk_home/platforms/android-9/arch-arm/usr ; $GCC --sysroot=$sysroot -I"$sysroot/include"  -g -Wall   files.c myregex.c mystring.c array.c  -ldl -lm -D debug_files && adb push a.out /sdcard/a.out && adb shell /sdcard/a.out
  */
 #include "files.h"
-#include "SDL_platform.h"
+//#include "SDL_platform.h"
 
 char * decodePath(char * path)
 {
@@ -13,8 +15,10 @@ char * decodePath(char * path)
 	char * home = NULL;
 	int changed = 0;
 	if(path[0]=='~'){
-#ifdef __ANDROID__
-		home = "/sdcard/";
+//#ifdef __ANDROID__
+#if defined(__ANDROID__)
+		//printf("__ANDROID__\n");
+		home = "/sdcard";
 #elif defined(__IPHONEOS__)
 		home = NULL;
 #else
@@ -36,9 +40,9 @@ char * decodePath(char * path)
 		while(path[n]=='/')
 			n++;
 		if(home){
-			printf("%s %s\n",home,path+n);
+			//printf("%s %s\n",home,path+n);
 			sprintf(out,"%s/%s",home,path+n);
-			printf("%s\n",out);
+			//printf("%s\n",out);
 		}else{
 			sprintf(out,"%s",path+n);
 		}
@@ -280,7 +284,7 @@ int main(int argc, char *argv[])
 	printf("HOME:%s\r\n",_home);
 	char* filename="~//hello//hi/test/dd////test";
 	printf("decodePath:%s\n",decodePath(filename));
-	return 0;
+	//return 0;
 	/*
 	//if( remove(filename) == 0 )
 	if( unlink(filename) == 0 )

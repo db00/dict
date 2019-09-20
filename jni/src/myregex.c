@@ -2,9 +2,14 @@
  *
  gcc -Wall myregex.c mystring.c array.c  -lm -D test_regex && ./a.out
  gcc -Wall mystring.c array.c myregex.c regex.c -lm -D test_regex -D STDC_HEADERS && a
- gcc -Wall myregex.c mystring.c regex.c -lm -D_DEBUG_ -DSTDC_HEADERS  && ./a.out
+ gcc -Wall myregex.c mystring.c regex.c -lm -D STDC_HEADERS  && ./a.out
  gcc -I"../SDL2/include/" -Wall mystring.c dict.c myregex.c regex.c  -lSDL2 -lm -lSDL2 -Ddebug -DSTDC_HEADERS && ./a.out nude
  gcc -I"../SDL2/include/" -Wall mystring.c dict.c myregex.c regex.c  -lmingw32 -lSDL2main -lSDL2 -lm -lSDL2 -Ddebug -DSTDC_HEADERS && a nude
+
+
+ ndk_home=~/android-ndk-r10 ; GCC=$ndk_home/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86/bin/arm-linux-androideabi-gcc ; sysroot=$ndk_home/platforms/android-9/arch-arm/usr ; $GCC --sysroot=$sysroot -I"$sysroot/include"  -g -Wall  myregex.c mystring.c array.c -ldl -lm -D test_regex && adb push a.out /sdcard/a.out && adb shell "mount -o remount,rw,exec /mnt/sdcard/" && adb shell /sdcard/a.out
+
+
  */
 
 #include "myregex.h"
@@ -438,11 +443,11 @@ int main()
 			len = subs[i].rm_eo - subs[i].rm_so;
 			if (i == 0)
 			{//当前匹配
-				printf ("first match : %d -> %d , len : %d , ",pos + subs[i].rm_so,pos + subs[i].rm_eo,(int)len);
+				printf ("first match : %d -> %d , len : %d , ",(int)(pos + subs[i].rm_so),(int)(pos + subs[i].rm_eo),(int)len);
 			}
 			else
 			{//子匹配
-				printf("sub match %d : %d -> %d , len : %d , ", i, pos + subs[i].rm_so,pos + subs[i].rm_eo, (int)len);
+				printf("sub match %d : %d -> %d , len : %d , ", i, (int)(pos + subs[i].rm_so),(int)(pos + subs[i].rm_eo), (int)len);
 			}
 
 			char * matched = getSubStr(subsrc,subs[i].rm_so,len);

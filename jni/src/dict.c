@@ -8,6 +8,12 @@
  gcc -Wall dict.c myregex.c -Ddebug && ./a.out
  gcc -Wall dict.c -Ddebug && a fun
  > dict.txt
+
+
+ ndk_home=~/android-ndk-r10 ; GCC=$ndk_home/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86/bin/arm-linux-androideabi-gcc ; sysroot=$ndk_home/platforms/android-9/arch-arm/usr ; $GCC --sysroot=$sysroot -I"$sysroot/include"  -g -Wall  files.c array.c mystring.c dict.c myregex.c -ldl -lm -D debug_dict && adb push a.out /sdcard/a.out && adb shell /sdcard/a.out hello
+
+
+
  * @file readall.c
  *  
  * @author db0@qq.com
@@ -598,7 +604,7 @@ int main(int argc,char**argv)
 	printf("numWords:%d\r\n",Dict_getNumWords(dict));
 	int _index = Dict_getWordIndex(dict,"hello");
 	printf("%d",_index);
-	return 0;
+	//return 0;
 	int numWords = 10;
 	int _i=0;
 	Array *wordlist = Dict_getWordList(dict,"zz",&numWords);
@@ -663,7 +669,7 @@ int main(int argc,char**argv)
 		break;
 		++i;
 	}
-	Word * w = Dict_getWordByRegWordNext(dict,"/^s.*b.*d/i",NULL);
+	//Word * w = Dict_getWordByRegWordNext(dict,"/^s.*b.*d/i",NULL);
 	/*getchar();*/
 	return 0;
 }
